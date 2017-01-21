@@ -1,6 +1,3 @@
-Express & ES6 REST API Boilerplate
-==================================
-
 Getting Started
 ---------------
 
