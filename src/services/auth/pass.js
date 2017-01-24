@@ -23,7 +23,7 @@ const digest = 'sha512';
  * generate a salt for `pass` and invoke `fn(err, salt, hash)`.
  *
  * @param {String} password to hash
- * @param {String} optional salt
+ * @param {String} salt salt
  */
 export default (password, salt) => {
         return crypto.pbkdf2Sync(password, salt, iterations, len,digest).toString('base64')
