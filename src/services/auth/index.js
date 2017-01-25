@@ -28,7 +28,6 @@ export default class AuthService extends Service {
         req.assert('password', 'required').notEmpty();
         req.assert('password', '6 to 20 characters required').len(6, 20);
         req.assert('userName', 'required').notEmpty();
-        req.assert('location', 'required').notEmpty();
         req.assert('phone', 'required').notEmpty();
         this.validation(req);
 
@@ -46,7 +45,7 @@ export default class AuthService extends Service {
                     });
                 })
                 .catch(error => {
-                    res.status(400).send(error.message || error);
+                    res.status(400).send(JSON.stringify(error.message || error));
                 }))
     };
 
@@ -69,7 +68,7 @@ export default class AuthService extends Service {
             this.dao.getUser(req.body.email)
                 .then(user => {
                     if (!user) {
-                        res.status(400).send("User doesn't exist");
+                        res.status(400).send(JSON.stringify('User not exist'));
                     } else {
                         const hash = getHash(req.body.password, user.salt);
                         if (hash == user.password) {
@@ -77,10 +76,11 @@ export default class AuthService extends Service {
                                 req.session.user = user;
                                 delete user.password;
                                 delete user.salt;
+                                res.cookie('cookieName', Math.random().toString(), { maxAge: 900000, httpOnly: true });
                                 res.json(user);
                             });
                         } else {
-                            res.status(400).send("Invalid password");
+                            res.status(400).send(JSON.stringify(JSON.stringify('Invalid password')));
                         }
                     }
                 })
