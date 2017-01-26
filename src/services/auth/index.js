@@ -23,10 +23,9 @@ export default class AuthService extends Service {
      */
     getUser = (req, res) => {
         if(req.session.key) {
-            console.log(req.session.key)
-            console.log(req.session.user)
+            console.log(req.session.key['user'])
             // if email key is sent redirect.
-            return res.json({user: req.session.user, isLogin: true})
+            return res.json({user: req.session.key['user'], isLogin: true})
         }
     };
 
@@ -85,7 +84,6 @@ export default class AuthService extends Service {
                         const hash = getHash(req.body.password, user.salt);
                         if (hash == user.password) {
                             req.session.regenerate(() => {
-                                req.session.key=user.id;
                                 req.session.user = user;
                                 delete user.password;
                                 delete user.salt;
