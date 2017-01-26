@@ -22,7 +22,6 @@ export default class AuthService extends Service {
      * @return {Promise} promise
      */
     getUser = (req, res) => {
-        console.log(req.session);
         if(req.session.key) {
             // if email key is sent redirect.
             return res.json({user: req.session.user, isLogin: true})
@@ -83,7 +82,6 @@ export default class AuthService extends Service {
                     } else {
                         const hash = getHash(req.body.password, user.salt);
                         if (hash == user.password) {
-                            console.log(req)
                             req.session.regenerate(() => {
                                 req.session.key=user.id;
                                 req.session.user = user;
