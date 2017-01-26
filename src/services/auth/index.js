@@ -15,14 +15,14 @@ export default class AuthService extends Service {
     }
 
     /**
-     * Method retugning user info.
+     * Method returning user info.
      *
      * @param {String} req request from client
      * @param {String} res response to client
      * @return {Promise} promise
      */
     getUser = (req, res) => {
-        console.log(req.session.key);
+        console.log(req.session);
         if(req.session.key) {
             console.log(req.session.key['user'])
             // if email key is sent redirect.
