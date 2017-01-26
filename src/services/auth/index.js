@@ -90,6 +90,7 @@ export default class AuthService extends Service {
                                 req.session.user = user;
                                 delete user.password;
                                 delete user.salt;
+                                console.log(req.session);
                                 // res.cookie('cookieName', Math.random().toString(), { maxAge: 900000, httpOnly: true });
                                 res.json(user);
                             });
