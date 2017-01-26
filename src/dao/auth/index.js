@@ -26,7 +26,8 @@ export default class AuthDao extends Dao {
                 } else {
                     return (
                         this.db.one(
-                            "INSERT INTO userinfo(${this~}) VALUES(${email}, ${password}, ${userName}, ${phone}, ${salt}) RETURNING id",
+                            "INSERT INTO userinfo (${this~}) VALUES(${email}, ${password}, ${userName}, ${phone}, ${salt}) " +
+                            "RETURNING id",
                             data,
                             u => u
                         ))

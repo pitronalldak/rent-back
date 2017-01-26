@@ -14,6 +14,20 @@ export default class AuthService extends Service {
         this.dao = dao;
     }
 
+    /**
+     * Method retugning user info.
+     *
+     * @param {String} req request from client
+     * @param {String} res response to client
+     * @return {Promise} promise
+     */
+    getUser = (req, res) => {
+        console.log(req.session);
+        if(req.session.key) {
+            // if email key is sent redirect.
+            return res.json({user: req.session.user, isLogin: true})
+        }
+    };
 
     /**
      * Method for creating new user.
@@ -39,13 +53,10 @@ export default class AuthService extends Service {
         return (
             this.dao.createUser(req.body)
                 .then(data => {
-                    res.json({
-                        success: true,
-                        data
-                    });
+                    res.json(data);
                 })
                 .catch(error => {
-                    res.status(400).send(JSON.stringify(error.message || error));
+                    res.status(400).json(error.message || error);
                 }))
     };
 
@@ -72,20 +83,22 @@ export default class AuthService extends Service {
                     } else {
                         const hash = getHash(req.body.password, user.salt);
                         if (hash == user.password) {
+                            console.log(req)
                             req.session.regenerate(() => {
+                                req.session.key=user.id;
                                 req.session.user = user;
                                 delete user.password;
                                 delete user.salt;
-                                res.cookie('cookieName', Math.random().toString(), { maxAge: 900000, httpOnly: true });
+                                // res.cookie('cookieName', Math.random().toString(), { maxAge: 900000, httpOnly: true });
                                 res.json(user);
                             });
                         } else {
-                            res.status(400).send(JSON.stringify(JSON.stringify('Invalid password')));
+                            res.status(400).json('Invalid password');
                         }
                     }
                 })
                 .catch(error => {
-                    res.status(400).send(error.message || error);
+                    res.status(400).json(error.message || error);
                 }))
     };
 }

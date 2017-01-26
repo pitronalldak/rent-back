@@ -13,5 +13,6 @@ export default class AuthApi {
     register = () => {
         this.app.post('/auth/sign-up', (req, res) => this.service.createUser(req, res));
         this.app.post('/auth/login', (req, res) => this.service.login(req, res));
+        this.app.get('/auth/user', (req, res) => this.service.getUser(req, res));
     }
 }
