@@ -22,13 +22,10 @@ export default class AuthService extends Service {
      * @return {Promise} promise
      */
     getUser = (req, res) => {
-        console.log(req.sessionID);
         if(req.session.user) {
             res.json({user: req.session.user, isLogin: true})
         } else {
-            req.session.destroy(() => {
-                res.json({isLogin: false});
-            });
+            res.json({isLogin: false});
         }
     };
 
@@ -90,7 +87,6 @@ export default class AuthService extends Service {
                                 delete user.password;
                                 delete user.salt;
                                 req.session.user = user;
-                                console.log(req.sessionID);
                                 // res.cookie('cookieName', Math.random().toString(), { maxAge: 900000, httpOnly: true });
                                 res.json({user, isLogin: true});
                             });
