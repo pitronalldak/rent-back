@@ -86,6 +86,7 @@ export default class AuthService extends Service {
                     } else {
                         const hash = getHash(req.body.password, user.salt);
                         if (hash == user.password) {
+                            console.log(req.sessionID);
                             req.session.regenerate(() => {
                                 delete user.password;
                                 delete user.salt;
