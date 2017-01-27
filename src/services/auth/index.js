@@ -24,9 +24,11 @@ export default class AuthService extends Service {
     getUser = (req, res) => {
         console.log(req.sessionID);
         if(req.session.user) {
-            return res.json({user: req.session.user, isLogin: true})
+            res.json({user: req.session.user, isLogin: true})
         } else {
-            return res.json({isLogin: false})
+            req.session.destroy(() => {
+                res.json({isLogin: false});
+            });
         }
     };
 
@@ -109,9 +111,8 @@ export default class AuthService extends Service {
      * @param {String} res response to client
      * @return {Promise} promise
      */
-    logout = (req, res) => {
+    logout = (req, res) =>
         req.session.destroy(() => {
             res.json({isLogin: false});
         });
-    };
 }
