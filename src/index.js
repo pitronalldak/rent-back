@@ -31,7 +31,11 @@ app.use(session({
     secret: 'keyboard cat',
     store: new redisStore({client: redisClient}),
     saveUninitialized: false,
-    resave: false
+    resave: false,
+    cookie: {
+        httpOnly: true,
+        maxAge: 1000 * 60 * 60 * 60
+    }
 }));
 
 app.use(cors({
