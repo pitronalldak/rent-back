@@ -56,8 +56,8 @@ export default class AuthService extends Service {
         req.body.password = password;
         return (
             this.dao.createUser(req.body)
-                .then(data => {
-                    res.json(data);
+                .then(user => {
+                    res.json({user, isLogin: true});
                 })
                 .catch(error => {
                     res.status(400).json(error.message || error);
@@ -95,7 +95,7 @@ export default class AuthService extends Service {
                                 req.session.userId = user.id;
                                 console.log(req.sessionID);
                                 // res.cookie('cookieName', Math.random().toString(), { maxAge: 900000, httpOnly: true });
-                                res.json(user);
+                                res.json({user, isLogin: true});
                             });
                         } else {
                             res.status(400).json('Invalid password');
