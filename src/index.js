@@ -36,7 +36,7 @@ app.use(cors({
 app.use(session({
     secret: 'keyboard cat',
     store: new redisStore({client: redisClient}),
-    saveUninitialized: true,
+    saveUninitialized: false,
     resave: false
 }));
 
