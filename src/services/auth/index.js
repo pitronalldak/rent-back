@@ -24,6 +24,7 @@ export default class AuthService extends Service {
     getUser = (req, res) => {
         console.log(req.session);
         console.log(req.sessionID);
+        req.session.userId = 8;
         if(req.session.userId) {
             // if email key is sent redirect.
             return res.json({user: req.session.key['user'], isLogin: true})
