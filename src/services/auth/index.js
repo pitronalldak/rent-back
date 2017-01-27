@@ -23,7 +23,7 @@ export default class AuthService extends Service {
      */
     getUser = (req, res) => {
         console.log(req.session);
-        if(req.session.key) {
+        if(req.session.userId) {
             console.log(req.session.key['user'])
             // if email key is sent redirect.
             return res.json({user: req.session.key['user'], isLogin: true})
@@ -89,7 +89,8 @@ export default class AuthService extends Service {
                             req.session.regenerate(() => {
                                 delete user.password;
                                 delete user.salt;
-                                req.session.user = user.id;
+                                req.session.userId = user.id;
+                                req.session.save()
                                 console.log(req.session);
                                 // res.cookie('cookieName', Math.random().toString(), { maxAge: 900000, httpOnly: true });
                                 res.json(user);
