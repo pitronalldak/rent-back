@@ -22,11 +22,9 @@ export default class AuthService extends Service {
      * @return {Promise} promise
      */
     getUser = (req, res) => {
-        console.log(req.session);
         console.log(req.sessionID);
         if(req.session.user) {
-            // if email key is sent redirect.
-            return res.json({user: req.session.userId, isLogin: true})
+            return res.json({user: req.session.user, isLogin: true})
         } else {
             return res.json({isLogin: false})
         }
