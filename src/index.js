@@ -25,7 +25,7 @@ app.server = http.createServer(app);
 /**
  *  3rd party middleware.
  */
-app.use(cookieParser());
+// app.use(cookieParser());
 
 app.use(session({
     secret: 'keyboard cat',
