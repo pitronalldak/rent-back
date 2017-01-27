@@ -106,4 +106,17 @@ export default class AuthService extends Service {
                     res.status(400).json(error.message || error);
                 }))
     };
+
+    /**
+     * Method for user logout.
+     *
+     * @param {String} req request from client
+     * @param {String} res response to client
+     * @return {Promise} promise
+     */
+    logout = (req, res) => {
+        req.session.destroy(() => {
+            res.json({isLogin: false});
+        });
+    };
 }
