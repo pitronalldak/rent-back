@@ -39,7 +39,7 @@ app.use(session({
 }));
 
 app.use(cors({
-    origin: 'http://localhost:3000',
+    origin: ['http://localhost:3000', 'https://rent-front.herokuapp.com'],
     credentials: true
 }));
 
@@ -53,8 +53,6 @@ app.all('*', function (req, res, next) {
     console.log(req.sessionID);
     next(); // pass control to the next handler
 });
-
-
 
 
 app.use(expressValidator({
