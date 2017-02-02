@@ -19,6 +19,11 @@ import AuthApi from './rest-api/auth';
 import AuthService from './services/auth';
 import AuthDao from './dao/auth';
 
+import AdvertApi from './rest-api/advert';
+import AdvertService from './services/advert';
+import AdvertDao from './dao/advert';
+
+
 let app = express();
 app.server = http.createServer(app);
 
@@ -73,6 +78,7 @@ app.use(expressValidator({
 }));
 
 new AuthApi(app, new AuthService(new AuthDao(db))).register();
+new AdvertApi(app, new AdvertService(new AdvertDao(db))).register();
 
 app.server.listen(process.env.PORT || config.port);
 

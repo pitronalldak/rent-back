@@ -53,6 +53,9 @@ export default class AuthService extends Service {
         return (
             this.dao.createUser(req.body)
                 .then(user => {
+                    user.email = req.body.email;
+                    user.userName = req.body.userName;
+                    user.phone = req.body.phone;
                     res.json({user, isLogin: true});
                 })
                 .catch(error => {
@@ -86,8 +89,9 @@ export default class AuthService extends Service {
                             req.session.regenerate(() => {
                                 delete user.password;
                                 delete user.salt;
+                                delete user.created;
+                                delete user.isVerify;
                                 req.session.user = user;
-                                // res.cookie('cookieName', Math.random().toString(), { maxAge: 900000, httpOnly: true });
                                 res.json({user, isLogin: true});
                             });
                         } else {
