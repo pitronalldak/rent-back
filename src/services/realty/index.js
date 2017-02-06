@@ -4,9 +4,9 @@
 import Service from '../service';
 
 /**
- * Service level class with methods for advertisement.
+ * Service level class with methods for realty.
  */
-export default class AdvertService extends Service {
+export default class RealtyService extends Service {
     constructor(dao) {
         super();
         this.dao = dao;
@@ -19,8 +19,8 @@ export default class AdvertService extends Service {
      * @param {String} res response to client
      * @return {Promise} promise
      */
-    createAdvert = (req, res) => {
-        //TODO should add validation logic
+    getRealty = (req, res) => {
+        //TODO should add validation logic 
         // req.assert('email', 'required').notEmpty();
         // req.assert('email', 'valid email required').isEmail();
         // req.assert('password', 'required').notEmpty();
@@ -29,9 +29,19 @@ export default class AdvertService extends Service {
         // req.assert('phone', 'required').notEmpty();
         // this.validation(req);
         return (
-            this.dao.createAdvert(req.body, 1)
-                .then((data) => {
-                    res.json({advertId: data[0]});
+            this.dao.getRealty(req.body)
+                .then((adverts) => {
+                    const advertIdList = adverts.map(a => adverts.id);
+                    this.dao.getPhotos(advertIdList)
+                        .then((photoList) => {
+                            for (const index in adverts) {
+                                adverts[index].photos = photoList[index];
+                            }
+                            res.json(adverts);
+                    })
+                    .catch(error => {
+                        res.status(400).json(error.message || error);
+                    })
                 })
                 .catch(error => {
                     res.status(400).json(error.message || error);

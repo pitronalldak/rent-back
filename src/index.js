@@ -23,6 +23,9 @@ import AdvertApi from './rest-api/advert';
 import AdvertService from './services/advert';
 import AdvertDao from './dao/advert';
 
+import RealtyApi from './rest-api/realty';
+import RealtyService from './services/realty';
+import RealtyDao from './dao/realty';
 
 let app = express();
 app.server = http.createServer(app);
@@ -79,6 +82,7 @@ app.use(expressValidator({
 
 new AuthApi(app, new AuthService(new AuthDao(db))).register();
 new AdvertApi(app, new AdvertService(new AdvertDao(db))).register();
+new RealtyApi(app, new RealtyService(new RealtyDao(db))).register();
 
 app.server.listen(process.env.PORT || config.port);
 

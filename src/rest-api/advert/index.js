@@ -12,6 +12,5 @@ export default class AdvertApi {
      */
     register = () => {
         this.app.post('/advert/create', (req, res) => this.service.createAdvert(req, res));
-
     }
 }
