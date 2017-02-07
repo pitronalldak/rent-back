@@ -19,7 +19,9 @@ export default class RealtyDao extends Dao {
      * @return {Promise} promise.
      */
     getRealty = (filter) => (
-        this.db.manyOrNone('SELECT * FROM advert')
+        this.db.manyOrNone(
+            'SELECT * FROM advert ORDER BY created ASC LIMIT 10'
+        )
     );
 
     /**
