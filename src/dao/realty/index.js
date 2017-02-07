@@ -47,7 +47,7 @@ export default class RealtyDao extends Dao {
     getAddresses = (advertIdList) => {
         const queries = [];
         for (let advertId of advertIdList) {
-            queries.push(this.db.manyOrNone('SELECT * FROM location WHERE advertId=$1', [advertId]));
+            queries.push(this.db.oneOrNone('SELECT * FROM location WHERE advertId=$1', [advertId]));
         }
         return this.db.task(t => t.batch(queries));
     };
