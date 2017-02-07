@@ -31,8 +31,8 @@ export default class RealtyService extends Service {
         return (
             this.dao.getRealty(req.body)
                 .then((adverts) => {
-                    const advertIdList = adverts.map(a => adverts.id);
-                    Promise.all([this.dao.getPhotos(advertIdList), this.dao.getAddress(advertIdList)])
+                    const advertIdList = adverts.map(a => a.id);
+                    Promise.all([this.dao.getPhotos(advertIdList), this.dao.getAddresses(advertIdList)])
                         .then((values) => {
                             for (const index in values[0]) {
                                 adverts[index].photos = values[0][index];

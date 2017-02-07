@@ -30,15 +30,13 @@ export default class RealtyDao extends Dao {
      * @param {Object} advertIdList.
      * @return {Promise} promise.
      */
-    getPhotos = (advertIdList) => (
-        this.db.task(t => {
-            const queries = [];
-            for (let advertId of advertIdList) {
-                queries.push(this.db.manyOrNone('SELECT * FROM photo WHERE advertId=$1', [advertId]));
-            }
-            return t.batch(queries);
-        })
-    );
+    getPhotos = (advertIdList) => {
+        const queries = [];
+        for (let advertId of advertIdList) {
+            queries.push(this.db.manyOrNone('SELECT * FROM photo WHERE advertId=$1', [advertId]));
+        }
+        return this.db.task(t => t.batch(queries));
+    };
 
     /**
      * Method for request address list by advert identifier.
@@ -46,14 +44,12 @@ export default class RealtyDao extends Dao {
      * @param {Object} advertIdList.
      * @return {Promise} promise.
      */
-    getAddress = (advertIdList) => (
-        this.db.task(t => {
-            const queries = [];
-            for (let advertId of advertIdList) {
-                queries.push(this.db.oneOrNone('SELECT * FROM location WHERE advertId=$1', [advertId]));
-            }
-            return t.batch(queries);
-        })
-    );
+    getAddresses = (advertIdList) => {
+        const queries = [];
+        for (let advertId of advertIdList) {
+            queries.push(this.db.manyOrNone('SELECT * FROM location WHERE advertId=$1', [advertId]));
+        }
+        return this.db.task(t => t.batch(queries));
+    };
 
 };
