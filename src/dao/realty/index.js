@@ -27,7 +27,7 @@ export default class RealtyDao extends Dao {
     /**
      * Method for request photos list by advert identifier.
      *
-     * @param {Object} advertIdList filter list for request.
+     * @param {Object} advertIdList.
      * @return {Promise} promise.
      */
     getPhotos = (advertIdList) => (
@@ -35,6 +35,22 @@ export default class RealtyDao extends Dao {
             const queries = [];
             for (let advertId of advertIdList) {
                 queries.push(this.db.manyOrNone('SELECT * FROM photo WHERE advertId=$1', [advertId]));
+            }
+            return t.batch(queries);
+        })
+    );
+
+    /**
+     * Method for request address list by advert identifier.
+     *
+     * @param {Object} advertIdList.
+     * @return {Promise} promise.
+     */
+    getAddress = (advertIdList) => (
+        this.db.task(t => {
+            const queries = [];
+            for (let advertId of advertIdList) {
+                queries.push(this.db.manyOrNone('SELECT * FROM location WHERE advertId=$1', [advertId]));
             }
             return t.batch(queries);
         })
