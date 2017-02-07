@@ -20,7 +20,7 @@ export default class RealtyDao extends Dao {
      */
     getRealty = (filter) => (
         this.db.manyOrNone(
-            'SELECT * FROM advert ORDER BY created ASC LIMIT 0 OFFSET 10'
+            'SELECT * FROM advert ORDER BY created ASC LIMIT 10 OFFSET 0'
         )
     );
 
