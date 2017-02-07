@@ -20,7 +20,7 @@ export default class RealtyDao extends Dao {
      */
     getRealty = (filter) => (
         this.db.manyOrNone(
-            'SELECT * FROM advert ORDER BY created ASC LIMIT 10 OFFSET 10'
+            'SELECT * FROM advert ORDER BY created ASC LIMIT 0 OFFSET 10'
         )
     );
 
@@ -50,7 +50,7 @@ export default class RealtyDao extends Dao {
         this.db.task(t => {
             const queries = [];
             for (let advertId of advertIdList) {
-                queries.push(this.db.manyOrNone('SELECT * FROM location WHERE advertId=$1', [advertId]));
+                queries.push(this.db.oneOrNone('SELECT * FROM location WHERE advertId=$1', [advertId]));
             }
             return t.batch(queries);
         })
