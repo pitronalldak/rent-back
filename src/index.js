@@ -57,8 +57,6 @@ app.use(bodyParser.json({
 
 
 app.all('*', function (req, res, next) {
-    console.log(req.session);
-    console.log(req.sessionID);
     next(); // pass control to the next handler
 });
 

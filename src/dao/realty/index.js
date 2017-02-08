@@ -27,13 +27,13 @@ export default class RealtyDao extends Dao {
     /**
      * Method for request photos list by advert identifier.
      *
-     * @param {Object} advertIdList.
+     * @param {Object} adverts.
      * @return {Promise} promise.
      */
-    getPhotos = (advertIdList) => {
+    getPhotos = (adverts) => {
         const queries = [];
-        for (let advertId of advertIdList) {
-            queries.push(this.db.manyOrNone('SELECT * FROM photo WHERE advertId=$1', [advertId]));
+        for (let advert of adverts) {
+            queries.push(this.db.manyOrNone('SELECT * FROM photo WHERE advertId=$1', [advert.id]));
         }
         return this.db.task(t => t.batch(queries));
     };
@@ -41,13 +41,34 @@ export default class RealtyDao extends Dao {
     /**
      * Method for request address list by advert identifier.
      *
-     * @param {Object} advertIdList.
+     * @param {Object} adverts.
      * @return {Promise} promise.
      */
-    getAddresses = (advertIdList) => {
+    getAddresses = (adverts) => {
         const queries = [];
-        for (let advertId of advertIdList) {
-            queries.push(this.db.oneOrNone('SELECT * FROM location WHERE advertId=$1', [advertId]));
+        for (let advert of adverts) {
+            queries.push(this.db.oneOrNone('SELECT * FROM location WHERE advertId=$1', [advert.id]));
+        }
+        return this.db.task(t => t.batch(queries));
+    };
+
+    /**
+     * Method for request terms list by advert identifier.
+     *
+     * @param {Object} adverts.
+     * @return {Promise} promise.
+     */
+    getTerms = (adverts) => {
+        const queries = [];
+        for (let advert of adverts) {
+            if (advert.dealtype === 'sale') {
+                queries.push(this.db.oneOrNone('SELECT * FROM salePrice WHERE advertId=$1', [advert.id]));
+            }
+            if (advert.dealtype === 'rent') {
+                for (let advert of adverts) {
+                    queries.push(this.db.oneOrNone('SELECT * FROM rentPrice WHERE advertId=$1', [advert.id]));
+                }
+            }
         }
         return this.db.task(t => t.batch(queries));
     };
