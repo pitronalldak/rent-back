@@ -65,9 +65,28 @@ export default class RealtyDao extends Dao {
                 queries.push(this.db.oneOrNone('SELECT * FROM salePrice WHERE advertId=$1', [advert.id]));
             }
             if (advert.dealtype === 'rent') {
-                for (let advert of adverts) {
-                    queries.push(this.db.oneOrNone('SELECT * FROM rentPrice WHERE advertId=$1', [advert.id]));
-                }
+                queries.push(this.db.oneOrNone('SELECT * FROM rentPrice WHERE advertId=$1', [advert.id]));
+            }
+        }
+        return this.db.task(t => t.batch(queries));
+    };
+
+    /**
+     * Method for request details list by advert identifier.
+     *
+     * @param {Object} adverts.
+     * @return {Promise} promise.
+     */
+    getDetails = (adverts) => {
+        const queries = [];
+        for (let advert of adverts) {
+            if (advert.realtytype === 'residential' &&
+                (advert.objecttype === 'room' || advert.objecttype === 'guestHouse' ||
+                advert.objecttype === 'apartment' || advert.objecttype === 'house')) {
+                queries.push(this.db.oneOrNone('SELECT * FROM residentialBuilding WHERE advertId=$1', [advert.id]));
+            }
+            if (advert.realtytype === 'residential' && advert.objecttype === 'land') {
+                queries.push(this.db.oneOrNone('SELECT * FROM residentialLand WHERE advertId=$1', [advert.id]));
             }
         }
         return this.db.task(t => t.batch(queries));

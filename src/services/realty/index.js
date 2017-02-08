@@ -34,7 +34,8 @@ export default class RealtyService extends Service {
                     Promise.all([
                         this.dao.getPhotos(adverts),
                         this.dao.getAddresses(adverts),
-                        this.dao.getTerms(adverts)
+                        this.dao.getTerms(adverts),
+                        this.dao.getDetails(adverts)
                     ])
                         .then((values) => {
                             for (const index in values[0]) {
@@ -45,6 +46,9 @@ export default class RealtyService extends Service {
                             }
                             for (const index in values[2]) {
                                 adverts[index].terms = values[2][index];
+                            }
+                            for (const index in values[3]) {
+                                adverts[index].details = values[3][index];
                             }
                             res.json(adverts);
                     })
